@@ -6,6 +6,13 @@ const postsRouter = require("./posts/posts-router")
 const server = express()
 
 server.use(express.json())
+
+//test
+server.get("/", (req, res) => {
+    res.json({ message: "Hello World" })
+})
+
+
 server.use(postsRouter)
 
 module.exports = server
