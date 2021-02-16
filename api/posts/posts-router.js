@@ -39,13 +39,9 @@ postsRouter.get("/api/posts/:id", (req, res) => {
         })
 })
 
-
+//working 
 //POST the newly created POST object 
 postsRouter.post("/api/posts", (req, res) => {
-    const newPost = {
-        title: req.body.title,
-        contents: req.body.contents,
-    }
     if (!req.body.title && !req.body.contents) {
         return res.status(400).json({
             message: "Please provide title and contents for the post"
@@ -53,10 +49,7 @@ postsRouter.post("/api/posts", (req, res) => {
     }
     posts.insert(req.body)
         .then((post) => {
-            res.status(201).json({
-                ...newPost,
-                id: post.id
-            })
+            res.status(201).json(post)
         })
         .catch(() => {
             res.status(500).json({
@@ -65,6 +58,7 @@ postsRouter.post("/api/posts", (req, res) => {
         })
 })
 
+//working
 // PUT returns the modified document 
 postsRouter.put("/api/posts/:id", (req, res) => {
     if (!req.body.title && !req.body.contents) {
@@ -72,7 +66,7 @@ postsRouter.put("/api/posts/:id", (req, res) => {
             message: "Please provide title and contents for the post"
         })
     }
-    posts.update(req.params.id, req.params.body)
+    posts.update(req.params.id, req.body)
         .then((post) => {
             if (post) {
                 res.status(200).json(post)
@@ -89,14 +83,13 @@ postsRouter.put("/api/posts/:id", (req, res) => {
         })
 })
 
+//working
 //DELETE deletes POST object
 postsRouter.delete("/api/posts/:id", (req, res) => {
     posts.remove(req.params.id)
     .then((post) => {
         if(post) {
-            res.status(200).json({
-                message: `Post id has been deleted`
-            })
+            res.status(200).json(post)
         } else {
             res.status(404).json({
                 message: "The post with the specified ID does not exist"
@@ -110,12 +103,13 @@ postsRouter.delete("/api/posts/:id", (req, res) => {
     })
 })
 
+//working
 //GET array of all the comment objects
 postsRouter.get("/api/posts/:id/comments", (req, res) => {
-    posts.findPostComments(req.params.postId)
-    .then(comment => {
-        if(comment){
-            res.status(200).json(comment)
+    posts.findPostComments(req.params.id)
+    .then(post => {
+        if(post){
+            res.status(200).json(post)
         }else{
             res.status(404).json({
                  message: "The post with the specified ID does not exist" 
